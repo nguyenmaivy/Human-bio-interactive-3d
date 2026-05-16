@@ -1,196 +1,224 @@
 <div align="center">
-  <h1>🧬 Human Bio Interactive 3D</h1>
-  <p><strong>Mô phỏng tác động của ma túy lên cơ thể người bằng mô hình 3D tương tác</strong></p>
+  <h1>Human Bio Interactive 3D</h1>
+  <p><strong>Mô phỏng tác hại của ma túy lên cơ thể người bằng mô hình 3D tương tác</strong></p>
   <p>
-    <a href="#features">Features</a> • 
-    <a href="#tech-stack">Tech Stack</a> • 
-    <a href="#quick-start">Quick Start</a> • 
-    <a href="#data-sources">Data Sources</a>
+    <a href="#tinh-nang">Tính năng</a> -
+    <a href="#tech-stack">Tech Stack</a> -
+    <a href="#quick-start">Quick Start</a> -
+    <a href="#kien-truc">Kiến trúc</a>
   </p>
 </div>
 
 ---
 
-## 📋 Giới thiệu
+## Giới Thiệu
 
-**Human Bio Interactive 3D** là một ứng dụng mô phỏng sinh học 3D cho phép người dùng khám phá tác động của các chất kích thích (heroin, cocaine, methamphetamine) lên các cơ quan nội tạng của cơ thể theo thời gian.
+**Human Bio Interactive 3D** là ứng dụng web mô phỏng tác động của các chất gây nghiện lên cơ thể người theo từng cơ quan và từng mốc thời gian. Dự án ưu tiên trải nghiệm trực quan: người dùng chọn chất, chọn timeline, chọn cơ quan trên model 3D hoặc thanh cơ quan phía dưới để xem chi tiết tổn thương.
 
-### Mục tiêu
+Định hướng dài hạn của dự án là tiến gần trải nghiệm kiểu BioDigital Human: cơ thể trong suốt, hotspot cơ quan, layer toggle, panel chi tiết, và model `.glb` có shape key cho các giai đoạn tổn thương.
 
-- 🎯 **Giáo dục**: Giúp mọi người hiểu rõ tác hại của ma túy lên cơ thể bằng trực quan 3D
-- 📊 **Dữ liệu chính xác**: Sử dụng dữ liệu từ các nguồn y khoa hàng đầu (NIH NIDA, WHO, CDC, PubMed)
-- 🔬 **Khoa học**: Mô phỏng dựa trên các nghiên cứu y học thực tế về tác hại lâu dài
+## Tính Năng
 
-## ✨ Tính năng
+### MVP Hiện Tại
 
-### MVP (Hiện tại)
+- Chọn 5 chất theo scope Plan:
+  - Heroin
+  - Cocaine
+  - Ma túy đá (Methamphetamine)
+  - Cần sa
+  - Thuốc lắc (MDMA)
+- Timeline 6 mốc luôn hiển thị:
+  - Bắt đầu
+  - 1 tuần
+  - 1 tháng
+  - 6 tháng
+  - 1 năm
+  - Dài hạn
+- Chọn 6 cơ quan:
+  - Tim
+  - Gan
+  - Não
+  - Phổi
+  - Hệ thần kinh
+  - Da
+- Model 3D primitive bằng React Three Fiber.
+- Thanh chọn cơ quan dưới model với nút `Tất cả`.
+- Panel chi tiết cơ quan:
+  - Mức độ tổn thương
+  - Phần trăm chức năng cơ quan
+  - Triệu chứng
+  - Mô tả y khoa
+  - Nguồn tham khảo
+- Empty state “Đang hoàn thiện mapping” khi chưa có dữ liệu y khoa cho tổ hợp drug x organ x stage.
 
-- ✅ **Chọn chất kích thích**: Heroin, Cocaine, Methamphetamine
-- ✅ **Timeline 6 mốc**:
-  - 🌅 Bắt đầu
-  - 📅 1 tuần
-  - 📆 1 tháng
-  - 📊 6 tháng
-  - 📈 1 năm
-  - ⚠️ Dài hạn
-- ✅ **Mô hình 3D tương tác**: Xoay, phóng to/thu nhỏ cơ thể người
-- ✅ **Highlight cơ quan**: Click vào cơ quan để xem chi tiết tác động
-- ✅ **Hiển thị triệu chứng**: Danh sách triệu chứng theo từng giai đoạn
-- ✅ **Mức độ tổn thương**: Thanh tiến độ % chức năng cơ quan
-- ✅ **Nguồn tài liệu**: Trích dẫn từ NIH, WHO, CDC, PubMed
+### Sắp Tới
 
-### Sắp tới
+- Hoàn thiện data mapping cho đủ 5 drugs x 6 organs x 6 stages.
+- Thay model primitive bằng anatomy `.glb`.
+- Dùng shape key/morph target trong Blender để nhúng 6 giai đoạn vào một file `.glb`.
+- Thêm layer toggle: da, nội tạng, hệ thần kinh, hệ xương, hotspot.
+- Thêm detail view riêng cho từng cơ quan.
+- Tối ưu hiệu năng bundle và lazy-load 3D assets.
 
-- 🔄 Thêm nhiều loại chất kích thích khác (LSD, Fentanyl, v.v.)
-- 🔄 Nâng cấp mô hình 3D anatomy chi tiết hơn
-- 🔄 So sánh tác động giữa các chất
-- 🔄 Chế độ so sánh hai cơ quan
-- 🔄 Export báo cáo chi tiết
+## Tech Stack
 
-## 🛠 Tech Stack
-
-- **Frontend**: React 18 + TypeScript
+- **Frontend**: React 19 + TypeScript
 - **Build Tool**: Vite
-- **3D**: Three.js + React Three Fiber (@react-three/fiber)
+- **3D**: Three.js + React Three Fiber + Drei
 - **UI**: Tailwind CSS
-- **Animation**: Framer Motion
+- **Animation**: Motion
 - **Icons**: Lucide React
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
-- **Node.js** >= 18.0.0
-- **npm** >= 9.0.0
+- Node.js >= 18
+- npm >= 9
 
 ### Installation
 
-1. Clone repository:
-   ```bash
-   git clone https://github.com/nguyenmaivy/Human-bio-interactive-3d.git
-   cd Human-bio-interactive-3d
-   ```
+```bash
+npm install
+```
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+### Development
 
-3. Run development server:
-   ```bash
-   npm run dev
-   ```
+```bash
+npm run dev
+```
 
-4. Open browser:
-   ```
-   http://localhost:5173
-   ```
+App mặc định chạy tại:
 
-### Build for production:
+```text
+http://localhost:3000
+```
+
+### Build
 
 ```bash
 npm run build
-npm run preview
 ```
 
-## 📁 Project Structure
+Script build đang dùng `vite build --emptyOutDir=false` để tránh lỗi Windows khi có file cũ trong `dist` bị process khác giữ.
 
+### Type Check
+
+```bash
+npm run lint
 ```
+
+### Clean
+
+```bash
+npm run clean
+```
+
+Nếu Windows đang khóa file trong `dist`, script sẽ in warning nhưng không làm hỏng workflow.
+
+## Kiến Trúc
+
+```text
 src/
 ├── components/
-│   ├── HumanModel.tsx          # 3D human model component
-│   ├── DrugSelector.tsx         # Drug selection UI
-│   ├── TimelinePanel.tsx        # Timeline stage selector
-│   ├── OrganInfoPanel.tsx       # Organ damage & effects display
-│   └── WarningCard.tsx          # Health warning disclaimer
+│   ├── DrugSelector.tsx         # Chọn chất gây nghiện
+│   ├── HumanModel.tsx           # Model 3D primitive và hotspot cơ quan
+│   ├── OrganInfoPanel.tsx       # Panel chi tiết cơ quan
+│   ├── OrganSelector.tsx        # Thanh chọn cơ quan dưới model
+│   ├── TimelinePanel.tsx        # Timeline 6 mốc
+│   └── WarningCard.tsx          # Cảnh báo giáo dục/y tế
+├── config/
+│   ├── damage.ts                # Màu và nhãn damage level
+│   ├── organs.ts                # Danh sách cơ quan, icon, label
+│   └── timeline.ts              # Label/icon/mô tả timeline
 ├── data/
-│   └── drugEffects.ts           # Drug × Organ × Stage mapping
+│   └── drugEffects.ts           # Drug x Organ x Stage mapping
 ├── lib/
-│   └── utils.ts                 # Utility functions
-├── App.tsx                      # Main app component
-├── types.ts                     # TypeScript types
-├── constants.tsx                # Application constants
+│   └── utils.ts                 # Helper className
+├── App.tsx                      # Layout và state chính
+├── constants.tsx                # Initial metrics + organ info
+├── index.css                    # Global styles
 ├── main.tsx                     # Entry point
-└── index.css                    # Global styles
+└── types.ts                     # Type dùng chung
 ```
 
-## 📊 Data Mapping
+## Data Mapping
 
-Drug effects are stored in `src/data/drugEffects.ts` with the following structure:
+Data y khoa nằm trong `src/data/drugEffects.ts`.
 
 ```ts
+type DrugName =
+  | 'heroin'
+  | 'cocaine'
+  | 'methamphetamine'
+  | 'cannabis'
+  | 'mdma';
+
+type OrganName =
+  | 'heart'
+  | 'liver'
+  | 'brain'
+  | 'lungs'
+  | 'nervous_system'
+  | 'skin';
+
+type TimelineStage =
+  | 'start'
+  | '1_week'
+  | '1_month'
+  | '6_months'
+  | '1_year'
+  | 'long_term';
+
 interface DrugEffect {
-  drug: 'heroin' | 'cocaine' | 'methamphetamine';
-  organ: 'heart' | 'liver' | 'brain' | 'lungs' | 'nervous_system' | 'skin';
-  stage: 'start' | '1_week' | '1_month' | '6_months' | '1_year' | 'long_term';
-  color: string;                  // Hex color for visualization
+  drug: DrugName;
+  organ: OrganName;
+  stage: TimelineStage;
+  color: string;
   damageLevel: 'none' | 'mild' | 'moderate' | 'severe' | 'critical';
-  functionPercent: number;        // Organ function remaining (0-100)
-  symptoms: string[];             // List of symptoms
-  description: string;            // Medical explanation
-  source: string;                 // Data source (e.g., "NIH NIDA")
-  sourceUrl?: string;             // Link to source
+  functionPercent: number;
+  symptoms: string[];
+  description: string;
+  source: string;
+  sourceUrl?: string;
 }
 ```
 
-### MVP Drug Data
+Hiện tại data đã có một số mapping cho Heroin, Cocaine và Methamphetamine. Cần sa, MDMA và nhiều tổ hợp cơ quan/stage vẫn đang ở trạng thái cần bổ sung dữ liệu đã kiểm chứng.
 
-- **Heroin** → Brain focus
-  - ✅ Bộ não (Brain) - All 6 stages
-  - Effects: Dopamine increase → tolerance → cognitive decline → severe damage
+## Pipeline 3D Dự Kiến
 
-- **Cocaine** → Heart focus
-  - ✅ Trái tim (Heart) - All 6 stages  
-  - Effects: Increased HR/BP → arrhythmias → cardiomyopathy → heart failure
+Pipeline dài hạn:
 
-- **Methamphetamine** → Skin + Brain
-  - ✅ Da (Skin) - All 6 stages
-  - ✅ Bộ não (Brain) - Start, 6 months stages
-  - Effects: Formication → severe sores → permanent scarring
+1. Dựng model anatomy trong Blender.
+2. Tách object/group theo quy ước như `Body_Skin`, `Layer_Organs`, `System_Nervous`, `System_Skeleton`.
+3. Tạo shape key/morph target cho các cơ quan chính theo 6 stage.
+4. Export một file `.glb` có đủ morph target.
+5. React Three Fiber load `.glb` bằng Drei `useGLTF`.
+6. Frontend map `drug + organ + stage` sang `morphTargetName`.
+7. Khi timeline đổi, frontend set `morphTargetInfluences`.
 
-## 📚 Data Sources
+Chi tiết kế hoạch nằm trong [PROJECT_ANALYSIS.md](./PROJECT_ANALYSIS.md).
 
-All drug effect data is based on peer-reviewed medical research:
+## Data Sources
 
-| Source | URL | Focus |
-|--------|-----|-------|
-| **NIH NIDA** | https://www.drugabuse.gov | Drug addiction neurobiology |
-| **WHO** | https://www.who.int | Global drug health impacts |
-| **CDC** | https://www.cdc.gov | Epidemiology & health data |
-| **PubMed** | https://pubmed.ncbi.nlm.nih.gov | Peer-reviewed research |
+Dữ liệu y khoa cần được kiểm chứng từ các nguồn chính:
 
-### Referenced Studies
+| Source | URL |
+| --- | --- |
+| NIH/NIDA | https://nida.nih.gov |
+| WHO | https://www.who.int |
+| CDC | https://www.cdc.gov |
+| PubMed | https://pubmed.ncbi.nlm.nih.gov |
 
-- Gray matter reduction in heroin users (PNAS, NIH Neuroimaging)
-- Cocaine cardiotoxicity (Circulation Journal)
-- Methamphetamine neurotoxicity (Neuropsychology Journal)
-- Premature aging in chronic meth users (NIH NIDA)
+## Disclaimer
 
-## ⚠️ Disclaimer
+Ứng dụng này chỉ phục vụ mục đích giáo dục và mô phỏng trực quan. Nội dung không thay thế tư vấn, chẩn đoán hoặc điều trị y tế chuyên nghiệp.
 
-This application provides **educational information only** and is not a substitute for medical advice. The simulations are based on published medical research but represent generalized effects.
+## License
 
-**If you or someone you know has a substance use disorder, please contact:**
-- **National Helpline (USA)**: 1-800-662-4357 (SAMHSA)
-- **International Support**: https://www.who.int/substance_abuse/treatment
+Apache 2.0.
 
-## 🤝 Contributing
+## Last Updated
 
-Contributions welcome! Areas for improvement:
-
-- [ ] Additional drug types
-- [ ] More detailed 3D anatomy models
-- [ ] Improved organ visualization effects
-- [ ] Comparison mode between drugs
-- [ ] Multi-language support
-- [ ] Mobile responsive design
-
-## 📝 License
-
-Apache 2.0 - See [LICENSE](LICENSE) file
-
-## 👤 Author
-
-Created for educational purposes about drug awareness.
-
-**Last Updated**: May 2026
+May 2026

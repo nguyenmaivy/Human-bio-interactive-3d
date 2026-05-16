@@ -160,8 +160,12 @@ Flow chính:
 - `src/components/HumanModel.tsx`: model 3D primitive và hotspot cơ quan.
 - `src/components/DrugSelector.tsx`: chọn chất kích thích.
 - `src/components/TimelinePanel.tsx`: chọn mốc thời gian.
+- `src/components/OrganSelector.tsx`: thanh chọn cơ quan phía dưới model.
 - `src/components/OrganInfoPanel.tsx`: hiển thị chi tiết tác động lên cơ quan.
-- `src/constants.tsx`: thông tin cơ quan và chỉ số sinh học ban đầu.
+- `src/config/organs.ts`: cấu hình dùng chung cho tên, icon và thứ tự cơ quan.
+- `src/config/timeline.ts`: cấu hình dùng chung cho label, icon và mô tả 6 mốc thời gian.
+- `src/config/damage.ts`: cấu hình màu và nhãn mức độ tổn thương.
+- `src/constants.tsx`: chỉ số sinh học ban đầu và thông tin mô tả cơ quan.
 
 ### Thành Phần Chưa Có
 
@@ -170,6 +174,7 @@ Flow chính:
 - Chưa có Cloudflare R2 để host GLB.
 - Chưa có GLB anatomy model production.
 - Chưa có API endpoint.
+- Chưa có layer toggle thật cho GLB vì hiện vẫn dùng model primitive.
 
 Các phần này nên để sang phase sau. Trước mắt nên hoàn thiện MVP trên nền React hiện có.
 
@@ -458,11 +463,12 @@ File `Plan/Tasks_1_month_v3.xlsx` có định hướng:
 - Railway để deploy backend.
 - Vercel để deploy frontend.
 
-Hướng triển khai trong repo này sẽ điều chỉnh thành:
+Hướng triển khai trong repo này đã điều chỉnh thành:
 
 - React + Vite cho frontend.
 - React Three Fiber để render 3D.
 - Data local trong TypeScript ở giai đoạn MVP.
+- Config dùng chung nằm trong `src/config` để dễ tái sử dụng, mở rộng và bảo trì.
 - Backend, Supabase và R2 là phase sau, chỉ thêm khi cần quản lý data hoặc GLB thật.
 
 Không đổi sang Flutter ở giai đoạn này. Giữ React + Vite vì:
@@ -520,6 +526,7 @@ Backend nên để sau khi:
 - [ ] Chạy `npm run build`.
 - [ ] Fix TypeScript errors nếu có.
 - [ ] Kiểm tra performance với model 3D.
+- [ ] Giữ các cấu hình dùng chung trong `src/config` thay vì hard-code rải rác trong component.
 - [ ] Chuẩn bị deploy.
 
 ### Documentation
