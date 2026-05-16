@@ -22,7 +22,7 @@ export const SUBSTANCES: SubstanceEffect[] = [
     description: 'Kích thích cực mạnh hệ thần kinh trung ương.',
     category: 'stimulant',
     biologicalProcess: 'Giải phóng ồ ạt Dopamine, gây co mạch và tăng nhịp tim cấp tính.',
-    peakTime: 15 * 60, // 15 mins
+    peakTime: 5 * 60, // 5 mins
     duration: 12 * 60 * 60, // 12 hours
     metricsDelta: {
       heartRate: 60,

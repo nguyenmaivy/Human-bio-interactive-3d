@@ -52,29 +52,49 @@ export default function App() {
   const [timeMultiplier, setTimeMultiplier] = useState(1); // 1s real = 1s sim
   const requestRef = useRef<number>(null);
   const lastTimeRef = useRef<number>(null);
+  
+  // Use refs for values needed in the high-frequency loop to avoid stale closures
+  // and unnecessary effect restarts.
+  const stateRef = useRef(state);
+  const timeMultiplierRef = useRef(timeMultiplier);
+
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
+
+  useEffect(() => {
+    timeMultiplierRef.current = timeMultiplier;
+  }, [timeMultiplier]);
 
   // Simulation Logic
-  const updateMetrics = (elapsed: number, deltaTime: number, timeMultiplier: number, substance: SubstanceEffect | null, currentOrganHealth: number): BioMetrics => {
-    if (!substance) return { ...INITIAL_METRICS, organHealth: currentOrganHealth };
+  const updateMetrics = (elapsed: number, deltaTime: number, timeMult: number, substance: SubstanceEffect | null, currentOrganHealth: number): BioMetrics => {
+    if (!substance) return { ...INITIAL_METRICS, organHealth: currentOrganHealth || 100 };
 
     // Simple peak-duration curve
     let intensity = 0;
     const { peakTime, duration } = substance;
 
-    if (elapsed < peakTime) {
-      intensity = elapsed / peakTime;
+    if (elapsed <= 0) {
+      intensity = 0;
+    } else if (elapsed < peakTime) {
+      intensity = peakTime > 0 ? elapsed / peakTime : 1;
     } else if (elapsed < duration) {
-      intensity = 1 - (elapsed - peakTime) / (duration - peakTime);
+      const den = duration - peakTime;
+      const num = elapsed - peakTime;
+      // Slower decay for more dramatic effect
+      intensity = den > 0 ? 1 - Math.pow(num / den, 0.5) : 0;
     } else {
       intensity = 0;
     }
 
-    // Ease the intensity
-    intensity = Math.pow(intensity, 0.7);
+    // Ease the intensity for a more "kick" feeling at the start
+    // Safeguard intensity to be a positive number before power operation
+    intensity = Math.max(0, Math.min(1, intensity || 0));
+    intensity = Math.pow(intensity, 0.4);
 
     // Calculate chronic damage
-    const damage = (substance.chronicDamageRate * intensity * deltaTime * timeMultiplier);
-    const nextOrganHealth = Math.max(0, currentOrganHealth - damage);
+    const damage = (substance.chronicDamageRate * intensity * deltaTime * timeMult) || 0;
+    const nextOrganHealth = Math.max(0, (currentOrganHealth || 100) - damage);
 
     const delta = substance.metricsDelta;
     
@@ -93,21 +113,14 @@ export default function App() {
   };
 
   const animate = (time: number) => {
-    if (lastTimeRef.current !== null && state.isActive) {
+    if (lastTimeRef.current !== null && stateRef.current.isActive) {
       const deltaTime = (time - lastTimeRef.current) / 1000; // in seconds
-      const deltaSimTime = deltaTime * timeMultiplier;
-      const nextElapsed = state.elapsedTime + deltaSimTime;
+      const deltaSimTime = deltaTime * timeMultiplierRef.current;
       
       setState(prev => {
-        const nextMetrics = updateMetrics(nextElapsed, deltaTime, timeMultiplier, prev.activeSubstance, prev.currentMetrics.organHealth);
+        const nextElapsed = prev.elapsedTime + deltaSimTime;
+        const nextMetrics = updateMetrics(nextElapsed, deltaTime, timeMultiplierRef.current, prev.activeSubstance, prev.currentMetrics.organHealth);
         
-        // Final state if duration reached
-        if (prev.activeSubstance && nextElapsed >= prev.activeSubstance.duration) {
-          // Keep the simulation running but intensity is 0 (handled by updateMetrics)
-          // Unless we want to auto-stop at years? User asked for years, so we don't auto-stop at 'duration'.
-          // Let it run to see long term stability.
-        }
-
         return {
           ...prev,
           elapsedTime: nextElapsed,
@@ -120,11 +133,19 @@ export default function App() {
   };
 
   useEffect(() => {
-    requestRef.current = requestAnimationFrame(animate);
+    // Only restart the loop when isActive changes
+    if (state.isActive) {
+      lastTimeRef.current = performance.now();
+      requestRef.current = requestAnimationFrame(animate);
+    } else {
+      if (requestRef.current) cancelAnimationFrame(requestRef.current);
+      lastTimeRef.current = null;
+    }
+    
     return () => {
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
     };
-  }, [state.isActive, timeMultiplier, state.activeSubstance, state.elapsedTime]);
+  }, [state.isActive]);
 
   const selectSubstance = (substance: SubstanceEffect) => {
     setState({
@@ -188,6 +209,26 @@ export default function App() {
       <div className="absolute inset-0 pointer-events-none opacity-20">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(60,20,20,0.4),transparent_70%)]" />
       </div>
+
+      {/* Color Overlay / Vignette for Drug Intensity */}
+      <AnimatePresence>
+        {state.activeSubstance && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ 
+              opacity: (state.currentMetrics.dopamineLevel / 100) * 0.4,
+              backgroundColor: state.activeSubstance.category === 'stimulant' ? 'rgba(255,100,0,0.1)' : 
+                               state.activeSubstance.category === 'depressant' ? 'rgba(0,100,255,0.1)' : 
+                               'rgba(255,0,255,0.1)'
+            }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 pointer-events-none z-50 pointer-events-none mix-blend-screen"
+            style={{ 
+              boxShadow: `inset 0 0 ${state.currentMetrics.dopamineLevel}px rgba(0,0,0,0.8)`
+            }}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Main Container */}
       <div className="relative flex flex-1 w-full gap-4 p-4 md:p-6 lg:p-8">
@@ -541,7 +582,7 @@ export default function App() {
                   <div className="w-24 h-1 bg-neutral-800 rounded-full mt-1 overflow-hidden">
                     <motion.div 
                       className="h-full bg-purple-500" 
-                      animate={{ width: `${state.currentMetrics.dopamineLevel}%` }}
+                      animate={{ width: `${Math.min(100, Math.max(0, state.currentMetrics.dopamineLevel || 0))}%` }}
                     />
                   </div>
                 </div>
@@ -550,7 +591,7 @@ export default function App() {
                   <div className="w-24 h-1 bg-neutral-800 rounded-full mt-1 overflow-hidden">
                     <motion.div 
                       className="h-full bg-orange-700" 
-                      animate={{ width: `${state.currentMetrics.toxinLevel}%` }}
+                      animate={{ width: `${Math.min(100, Math.max(0, state.currentMetrics.toxinLevel || 0))}%` }}
                     />
                   </div>
                 </div>
@@ -563,6 +604,9 @@ export default function App() {
 }
 
 function MetricItem({ icon, label, value, unit, color, progress }: { icon: React.ReactNode, label: string, value: string | number, unit: string, color: string, progress: number }) {
+  const safeValue = typeof value === 'number' && isNaN(value) ? '0' : value;
+  const safeProgress = isNaN(progress) ? 0 : Math.min(100, Math.max(0, progress * 100));
+
   return (
     <div className="space-y-1">
       <div className="flex items-center justify-between">
@@ -571,14 +615,14 @@ function MetricItem({ icon, label, value, unit, color, progress }: { icon: React
           {label}
         </div>
         <div className="flex items-baseline gap-1">
-          <span className={cn("text-lg font-mono font-bold font-numeric", color)}>{value}</span>
+          <span className={cn("text-lg font-mono font-bold font-numeric", color)}>{safeValue}</span>
           <span className="text-[8px] text-neutral-600 font-bold">{unit}</span>
         </div>
       </div>
       <div className="w-full h-0.5 bg-neutral-800 rounded-full overflow-hidden">
         <motion.div 
           className={cn("h-full", color.replace('text-', 'bg-'))}
-          animate={{ width: `${Math.min(100, Math.max(0, progress * 100))}%` }}
+          animate={{ width: `${safeProgress}%` }}
         />
       </div>
     </div>

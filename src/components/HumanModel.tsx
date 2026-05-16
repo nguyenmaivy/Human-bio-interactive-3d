@@ -39,6 +39,15 @@ const Organ = ({ type, position, color, activityScale, label, health, isSelected
     
     // Gentle rotation
     meshRef.current.rotation.y += 0.01 * activityScale;
+
+    // Critical stress shake
+    if (activityScale > 0.8) {
+      meshRef.current.position.x = (Math.random() - 0.5) * 0.01 * activityScale;
+      meshRef.current.position.y = position[1] + (Math.random() - 0.5) * 0.01 * activityScale;
+    } else {
+      meshRef.current.position.x = 0;
+      meshRef.current.position.y = position[1];
+    }
   });
 
   const OrganGeometry = () => {
@@ -118,7 +127,7 @@ const Organ = ({ type, position, color, activityScale, label, health, isSelected
               <div className="w-12 h-0.5 bg-white/10 rounded-full overflow-hidden">
                 <div 
                   className="h-full bg-blue-400" 
-                  style={{ width: `${activityScale * 100}%` }} 
+                  style={{ width: `${Math.min(100, Math.max(0, (activityScale || 0) * 100))}%` }} 
                 />
               </div>
             )}
