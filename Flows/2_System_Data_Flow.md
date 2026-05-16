@@ -9,9 +9,9 @@ graph TD
     classDef data fill:#c3e6cb,stroke:#28a745,stroke-width:2px,color:#000
     classDef render fill:#f8d7da,stroke:#dc3545,stroke-width:2px,color:#000
 
-    A((User Input)) --> B1[State: activeDrug]:::state
-    A --> B2[State: activeStage]:::state
-    A --> B3[State: selectedOrgan]:::state
+    A(("User Input")) --> B1["State: activeDrug"]:::state
+    A --> B2["State: activeStage"]:::state
+    A --> B3["State: selectedOrgan"]:::state
 
     B1 --> C{"Hàm xử lý:<br>getEffect(drug, organ, stage)"}:::logic
     B2 --> C
@@ -22,10 +22,10 @@ graph TD
     D -- "Tìm thấy DrugEffect" --> E1["Trả về Object:<br>- color<br>- damageLevel<br>- functionPercent<br>- symptoms"]:::data
     D -- "Chưa có Mapping" --> E2["Trả về trạng thái:<br>Đang hoàn thiện dữ liệu"]:::data
 
-    E1 --> F1(Cập nhật HumanModel.tsx):::render
-    E1 --> F2(Cập nhật OrganInfoPanel.tsx):::render
+    E1 --> F1("Cập nhật HumanModel.tsx"):::render
+    E1 --> F2("Cập nhật OrganInfoPanel.tsx"):::render
 
-    E2 --> F3(Hiển thị Empty State / Thông báo):::render
+    E2 --> F3("Hiển thị Empty State / Thông báo"):::render
 
     F1 --> G1["React Three Fiber Render:<br>- Đổi màu material<br>- Cập nhật morphTargetInfluences<br>- Kích hoạt animation (nhịp đập)"]:::render
     

@@ -11,33 +11,33 @@ graph TD
     classDef result fill:#f8d7da,stroke:#dc3545,stroke-width:2px,color:#000
 
     %% Nodes
-    A[Mở Ứng Dụng / Web Browser]:::mainScreen
+    A["Mở Ứng Dụng / Web Browser"]:::mainScreen
     B["Dashboard Screen<br>Hiển thị Cơ Thể Người 3D & Warning Card"]:::mainScreen
     
     C1["Bảng Chọn Chất Kích Thích<br>Panel Bên Trái"]:::panel
     C2["Mô Hình 3D Toàn Thân<br>Trung Tâm"]:::panel
     C3["Thanh Công Cụ / Chọn Cơ Quan<br>Panel Bên Dưới"]:::panel
 
-    D1(Chọn Heroin):::interaction
-    D2(Chọn Cocaine):::interaction
-    D3(Chọn Meth):::interaction
-    D4(Chọn Cần sa / MDMA):::interaction
+    D1("Chọn Heroin"):::interaction
+    D2("Chọn Cocaine"):::interaction
+    D3("Chọn Meth"):::interaction
+    D4("Chọn Cần sa / MDMA"):::interaction
 
     E["Hiển thị Timeline 6 mốc<br>Panel Bên Phải"]:::panel
 
-    F1(Bắt Đầu):::interaction
-    F2(1 Tuần):::interaction
-    F3(1 Tháng - 1 Năm):::interaction
-    F4(Nghiện Dài Hạn):::interaction
+    F1("Bắt Đầu"):::interaction
+    F2("1 Tuần"):::interaction
+    F3("1 Tháng - 1 Năm"):::interaction
+    F4("Nghiện Dài Hạn"):::interaction
 
     G["Cập nhật Hình Dáng & Màu Sắc Model 3D<br>Áp dụng Shape Key & Texture"]:::result
 
-    H(Click vào Cơ Quan / Hotspot trên Model):::interaction
+    H("Click vào Cơ Quan / Hotspot trên Model"):::interaction
 
-    I[Mở Panel Chi Tiết Cơ Quan]:::result
-    I1[Hiển thị Mức độ tổn thương & % Chức năng]:::result
-    I2[Hiển thị Triệu chứng & Bệnh lý]:::result
-    I3[Nguồn tài liệu y khoa tham khảo]:::result
+    I["Mở Panel Chi Tiết Cơ Quan"]:::result
+    I1["Hiển thị Mức độ tổn thương & % Chức năng"]:::result
+    I2["Hiển thị Triệu chứng & Bệnh lý"]:::result
+    I3["Nguồn tài liệu y khoa tham khảo"]:::result
 
     %% Connections
     A --> B

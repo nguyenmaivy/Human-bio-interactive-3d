@@ -9,11 +9,11 @@ graph TD
     classDef dev fill:#e8eaf6,stroke:#3f51b5,stroke-width:2px,color:#000
     classDef runtime fill:#e0f7fa,stroke:#00bcd4,stroke-width:2px,color:#000
 
-    A[Tạo hình Model 3D cơ thể và Nội tạng trong Blender]:::design
+    A["Tạo hình Model 3D cơ thể và Nội tạng trong Blender"]:::design
     
     B1["Phân chia Objects:<br>- Brain<br>- Heart<br>- Liver<br>- Lungs<br>- Body_Skin"]:::design
-    B2[Tạo Shape Keys (Morph Targets) cho 6 mốc thời gian của từng cơ quan]:::design
-    B3[Gắn Material/Texture cơ bản]:::design
+    B2["Tạo Shape Keys (Morph Targets) cho 6 mốc thời gian của từng cơ quan"]:::design
+    B3["Gắn Material/Texture cơ bản"]:::design
 
     A --> B1
     A --> B2
@@ -23,9 +23,9 @@ graph TD
     B2 --> C
     B3 --> C
 
-    C(Export ra định dạng .glb):::export
+    C("Export ra định dạng .glb"):::export
 
-    D[Lưu file .glb vào thư mục public/ của dự án React]:::dev
+    D["Lưu file .glb vào thư mục public/ của dự án React"]:::dev
 
     C --> D
 
@@ -33,9 +33,9 @@ graph TD
 
     D --> E
 
-    F1[Bóc tách nodes và materials từ file GLB]:::runtime
-    F2[Thiết lập sự kiện onClick, onPointerOver cho từng node cơ quan]:::runtime
-    F3[Liên kết Shape Keys (morphTargetInfluences) với State của ứng dụng]:::runtime
+    F1["Bóc tách nodes và materials từ file GLB"]:::runtime
+    F2["Thiết lập sự kiện onClick, onPointerOver cho từng node cơ quan"]:::runtime
+    F3["Liên kết Shape Keys (morphTargetInfluences) với State của ứng dụng"]:::runtime
 
     E --> F1
     E --> F2
