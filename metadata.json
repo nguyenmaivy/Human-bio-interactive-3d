@@ -1,0 +1,6 @@
+{
+  "name": "Human Bio-Interactive 3D",
+  "description": "Ứng dụng tương tác 3D mô phỏng tác động sinh học của các chất lên cơ quan nội tạng con người theo thời gian thực.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
