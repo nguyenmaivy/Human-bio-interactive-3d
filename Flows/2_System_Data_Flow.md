@@ -13,23 +13,23 @@ graph TD
     A --> B2[State: activeStage]:::state
     A --> B3[State: selectedOrgan]:::state
 
-    B1 --> C{Hàm xử lý:\ngetEffect(drug, organ, stage)}:::logic
+    B1 --> C{"Hàm xử lý:<br>getEffect(drug, organ, stage)"}:::logic
     B2 --> C
     B3 --> C
 
-    C --> D[(Data Store:\nsrc/data/drugEffects.ts)]:::data
+    C --> D[("Data Store:<br>src/data/drugEffects.ts")]:::data
     
-    D -- "Tìm thấy DrugEffect" --> E1[Trả về Object:\n- color\n- damageLevel\n- functionPercent\n- symptoms]:::data
-    D -- "Chưa có Mapping" --> E2[Trả về trạng thái:\nĐang hoàn thiện dữ liệu]:::data
+    D -- "Tìm thấy DrugEffect" --> E1["Trả về Object:<br>- color<br>- damageLevel<br>- functionPercent<br>- symptoms"]:::data
+    D -- "Chưa có Mapping" --> E2["Trả về trạng thái:<br>Đang hoàn thiện dữ liệu"]:::data
 
     E1 --> F1(Cập nhật HumanModel.tsx):::render
     E1 --> F2(Cập nhật OrganInfoPanel.tsx):::render
 
     E2 --> F3(Hiển thị Empty State / Thông báo):::render
 
-    F1 --> G1[React Three Fiber Render:\n- Đổi màu material\n- Cập nhật morphTargetInfluences\n- Kích hoạt animation (nhịp đập)]:::render
+    F1 --> G1["React Three Fiber Render:<br>- Đổi màu material<br>- Cập nhật morphTargetInfluences<br>- Kích hoạt animation (nhịp đập)"]:::render
     
-    F2 --> G2[DOM Render:\n- Chữ mô tả\n- Biểu đồ Health\n- Link tham khảo]:::render
+    F2 --> G2["DOM Render:<br>- Chữ mô tả<br>- Biểu đồ Health<br>- Link tham khảo"]:::render
 ```
 
 ### Giải thích:

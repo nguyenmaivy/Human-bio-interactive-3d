@@ -11,7 +11,7 @@ graph TD
 
     A[Tạo hình Model 3D cơ thể và Nội tạng trong Blender]:::design
     
-    B1[Phân chia Objects:\n- Brain\n- Heart\n- Liver\n- Lungs\n- Body_Skin]:::design
+    B1["Phân chia Objects:<br>- Brain<br>- Heart<br>- Liver<br>- Lungs<br>- Body_Skin"]:::design
     B2[Tạo Shape Keys (Morph Targets) cho 6 mốc thời gian của từng cơ quan]:::design
     B3[Gắn Material/Texture cơ bản]:::design
 
@@ -29,7 +29,7 @@ graph TD
 
     C --> D
 
-    E[Code Frontend:\nDùng @react-three/drei hooks useGLTF() để nhúng vào Canvas]:::dev
+    E["Code Frontend:<br>Dùng @react-three/drei hooks useGLTF() để nhúng vào Canvas"]:::dev
 
     D --> E
 
@@ -41,7 +41,7 @@ graph TD
     E --> F2
     E --> F3
     
-    G[Render WebGL tương tác mượt mà\n(Không cần reload lại trang khi chuyển trạng thái)]:::runtime
+    G["Render WebGL tương tác mượt mà<br>(Không cần reload lại trang khi chuyển trạng thái)"]:::runtime
     
     F1 --> G
     F2 --> G

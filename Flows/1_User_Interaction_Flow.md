@@ -12,25 +12,25 @@ graph TD
 
     %% Nodes
     A[Mở Ứng Dụng / Web Browser]:::mainScreen
-    B[Dashboard Screen\nHiển thị Cơ Thể Người 3D & Warning Card]:::mainScreen
+    B["Dashboard Screen<br>Hiển thị Cơ Thể Người 3D & Warning Card"]:::mainScreen
     
-    C1[Bảng Chọn Chất Kích Thích\nPanel Bên Trái]:::panel
-    C2[Mô Hình 3D Toàn Thân\nTrung Tâm]:::panel
-    C3[Thanh Công Cụ / Chọn Cơ Quan\nPanel Bên Dưới]:::panel
+    C1["Bảng Chọn Chất Kích Thích<br>Panel Bên Trái"]:::panel
+    C2["Mô Hình 3D Toàn Thân<br>Trung Tâm"]:::panel
+    C3["Thanh Công Cụ / Chọn Cơ Quan<br>Panel Bên Dưới"]:::panel
 
     D1(Chọn Heroin):::interaction
     D2(Chọn Cocaine):::interaction
     D3(Chọn Meth):::interaction
     D4(Chọn Cần sa / MDMA):::interaction
 
-    E[Hiển thị Timeline 6 mốc\nPanel Bên Phải]:::panel
+    E["Hiển thị Timeline 6 mốc<br>Panel Bên Phải"]:::panel
 
     F1(Bắt Đầu):::interaction
     F2(1 Tuần):::interaction
     F3(1 Tháng - 1 Năm):::interaction
     F4(Nghiện Dài Hạn):::interaction
 
-    G[Cập nhật Hình Dáng & Màu Sắc Model 3D\nÁp dụng Shape Key & Texture]:::result
+    G["Cập nhật Hình Dáng & Màu Sắc Model 3D<br>Áp dụng Shape Key & Texture"]:::result
 
     H(Click vào Cơ Quan / Hotspot trên Model):::interaction
 
