@@ -142,6 +142,15 @@ src/
 └── types.ts                     # Type dùng chung
 ```
 
+## Sơ Đồ Luồng (Flows)
+
+Dự án đã được phân tích và bóc tách thành các sơ đồ luồng chi tiết để dễ dàng theo dõi và mở rộng. Bạn có thể xem trực tiếp các sơ đồ (sử dụng Mermaid) tại thư mục `Flows/`:
+
+- **[User Interaction Flow](./Flows/1_User_Interaction_Flow.md):** Quy trình tương tác của người dùng từ màn hình chính, chọn chất gây nghiện, mốc thời gian và xem chi tiết cơ quan.
+- **[System Data Flow](./Flows/2_System_Data_Flow.md):** Luồng xử lý dữ liệu ngầm, cách React quản lý State và truyền dữ liệu xuống model 3D cũng như UI Panel.
+- **[3D Asset Pipeline Flow](./Flows/3_Asset_Pipeline_Flow.md):** Quy trình xử lý mô hình 3D từ phần mềm thiết kế (Blender) thành file `.glb` tích hợp Shape Keys (Morph Targets) và tải lên React Three Fiber.
+- **[GLB Integration Guide](./Flows/glb_integration_guide.md):** Hướng dẫn chi tiết cách thay thế các hình khối cơ bản hiện tại bằng một file `.glb` thật sự.
+
 ## Data Mapping
 
 Data y khoa nằm trong `src/data/drugEffects.ts`.
