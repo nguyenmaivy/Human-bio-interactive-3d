@@ -4,6 +4,7 @@ import { Sphere, Box, MeshDistortMaterial, Float, Html, MeshWobbleMaterial, Toru
 import * as THREE from 'three';
 import { BioMetrics, OrganType } from '../types';
 import { cn } from '../lib/utils';
+import { ORGAN_BY_ID } from '../config/organs';
 
 interface OrganProps {
   type: OrganType;
@@ -31,12 +32,12 @@ const Organ = ({ type, position, color, activityScale, label, health, isSelected
   useFrame((state) => {
     if (!meshRef.current) return;
     const t = state.clock.getElapsedTime();
-    
+
     // Pulse effect
     const pulse = 1 + Math.sin(t * (activityScale + 1) * 3) * 0.04 * activityScale;
     const scale = healthFactor * pulse;
     meshRef.current.scale.set(scale, scale, scale);
-    
+
     // Gentle rotation
     meshRef.current.rotation.y += 0.01 * activityScale;
 
@@ -87,10 +88,27 @@ const Organ = ({ type, position, color, activityScale, label, health, isSelected
             <meshStandardMaterial color={healthColor} roughness={0.5} />
           </Box>
         );
-      case 'stomach':
+      case 'nervous_system':
         return (
-          <Sphere args={[0.25, 32, 32]} scale={[1.2, 0.8, 0.7]}>
-            <meshStandardMaterial color={healthColor} />
+          <group>
+            <Sphere args={[0.06, 16, 16]} position={[0, 0.55, 0]}>
+              <meshStandardMaterial color={healthColor} emissive={healthColor} emissiveIntensity={0.2} />
+            </Sphere>
+            <Box args={[0.04, 1.35, 0.04]} position={[0, -0.15, 0]}>
+              <meshStandardMaterial color={healthColor} emissive={healthColor} emissiveIntensity={0.15} />
+            </Box>
+            <Box args={[0.55, 0.03, 0.03]} position={[0, 0.15, 0]} rotation={[0, 0, 0.25]}>
+              <meshStandardMaterial color={healthColor} transparent opacity={0.8} />
+            </Box>
+            <Box args={[0.55, 0.03, 0.03]} position={[0, -0.25, 0]} rotation={[0, 0, -0.25]}>
+              <meshStandardMaterial color={healthColor} transparent opacity={0.8} />
+            </Box>
+          </group>
+        );
+      case 'skin':
+        return (
+          <Sphere args={[1.5, 32, 32]}>
+            <meshStandardMaterial color={healthColor} wireframe transparent opacity={0.3} />
           </Sphere>
         );
       default:
@@ -99,8 +117,8 @@ const Organ = ({ type, position, color, activityScale, label, health, isSelected
   };
 
   return (
-    <group 
-      position={position} 
+    <group
+      position={position}
       onClick={(e) => {
         e.stopPropagation();
         onClick(type);
@@ -116,18 +134,18 @@ const Organ = ({ type, position, color, activityScale, label, health, isSelected
           <div className="flex flex-col gap-1 items-start">
             <div className={cn(
               "px-2 py-0.5 rounded border text-[9px] font-bold uppercase tracking-tighter whitespace-nowrap backdrop-blur-sm shadow-xl transition-colors",
-              isSelected ? "bg-white text-black border-white" : 
-              health < 30 ? "bg-red-950/80 border-red-500/50 text-red-100" : 
-              hovered ? "bg-white/20 border-white/40 text-white" :
-              "bg-black/60 border-white/20 text-white/80"
+              isSelected ? "bg-white text-black border-white" :
+                health < 30 ? "bg-red-950/80 border-red-500/50 text-red-100" :
+                  hovered ? "bg-white/20 border-white/40 text-white" :
+                    "bg-black/60 border-white/20 text-white/80"
             )}>
               {label}
             </div>
             {activityScale > 0.5 && (
               <div className="w-12 h-0.5 bg-white/10 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-blue-400" 
-                  style={{ width: `${Math.min(100, Math.max(0, (activityScale || 0) * 100))}%` }} 
+                <div
+                  className="h-full bg-blue-400"
+                  style={{ width: `${Math.min(100, Math.max(0, (activityScale || 0) * 100))}%` }}
                 />
               </div>
             )}
@@ -155,10 +173,10 @@ export const HumanModel = ({ metrics, selectedOrgan, onSelectOrgan }: HumanModel
       {/* Body Silhouette */}
       <mesh position={[0, 0, 0]}>
         <capsuleGeometry args={[0.6, 2.4, 32, 32]} />
-        <meshStandardMaterial 
-          color={health < 30 ? "#330000" : "#222222"} 
-          wireframe 
-          transparent 
+        <meshStandardMaterial
+          color={health < 30 ? "#330000" : "#222222"}
+          wireframe
+          transparent
           opacity={0.1}
           emissive={health < 30 ? "#ff0000" : "#00ffff"}
           emissiveIntensity={health < 30 ? 0.2 : 0.05}
@@ -166,58 +184,69 @@ export const HumanModel = ({ metrics, selectedOrgan, onSelectOrgan }: HumanModel
       </mesh>
 
       {/* Internal Organs */}
-      <Organ 
-        type="brain" 
+      <Organ
+        type="brain"
         position={[0, 1.4, 0]} 
         color={brainActivity > 0.5 ? '#fbc02d' : '#ec407a'} 
         activityScale={brainActivity} 
-        label="Cortex - Hệ thần kinh"
+        label={ORGAN_BY_ID.brain.label}
         health={health}
         isSelected={selectedOrgan === 'brain'}
         onClick={onSelectOrgan}
       />
-      
-      <Organ 
-        type="heart" 
+
+      <Organ
+        type="heart"
         position={[0, 0.6, 0.1]} 
         color={heartActivity > 0.8 ? '#d32f2f' : '#ad1457'} 
         activityScale={heartActivity} 
-        label="Cơ tim - Rhythm"
+        label={ORGAN_BY_ID.heart.label}
         health={health}
         isSelected={selectedOrgan === 'heart'}
         onClick={onSelectOrgan}
       />
 
-      <Organ 
-        type="lungs" 
+      <Organ
+        type="lungs"
         position={[0, 0.55, -0.1]} 
         color="#80deea" 
         activityScale={metrics.respirationRate / 30} 
-        label="Hệ hô hấp"
+        label={ORGAN_BY_ID.lungs.label}
         health={health}
         isSelected={selectedOrgan === 'lungs'}
         onClick={onSelectOrgan}
       />
 
-      <Organ 
-        type="liver" 
+      <Organ
+        type="liver"
         position={[-0.2, 0.15, 0.1]} 
         color={liverActivity > 0.5 ? '#5d4037' : '#6d4c41'} 
         activityScale={liverActivity} 
-        label="Gan - Metabolize"
+        label={ORGAN_BY_ID.liver.label}
         health={health}
         isSelected={selectedOrgan === 'liver'}
         onClick={onSelectOrgan}
       />
 
-      <Organ 
-        type="stomach" 
-        position={[0.1, 0.05, 0.1]} 
-        color="#d7ccc8" 
-        activityScale={0.2} 
-        label="Hệ tiêu hóa"
+      <Organ
+        type="nervous_system"
+        position={[0, 0.35, -0.05]}
+        color="#facc15"
+        activityScale={Math.max(0.2, brainActivity)}
+        label={ORGAN_BY_ID.nervous_system.label}
         health={health}
-        isSelected={selectedOrgan === 'stomach'}
+        isSelected={selectedOrgan === 'nervous_system'}
+        onClick={onSelectOrgan}
+      />
+
+      <Organ 
+        type="skin" 
+        position={[0, 0, 0]} 
+        color={liverActivity > 0.5 ? '#e8c5a5' : '#d4a574'} 
+        activityScale={0.1} 
+        label={ORGAN_BY_ID.skin.label}
+        health={health}
+        isSelected={selectedOrgan === 'skin'}
         onClick={onSelectOrgan}
       />
 
@@ -232,11 +261,11 @@ export const HumanModel = ({ metrics, selectedOrgan, onSelectOrgan }: HumanModel
               itemSize={3}
             />
           </bufferGeometry>
-          <pointsMaterial 
-            color={heartActivity > 0.8 ? "#ff1744" : "#00e5ff"} 
-            size={0.015} 
-            transparent 
-            opacity={0.3} 
+          <pointsMaterial
+            color={heartActivity > 0.8 ? "#ff1744" : "#00e5ff"}
+            size={0.015}
+            transparent
+            opacity={0.3}
             blending={THREE.AdditiveBlending}
           />
         </points>
